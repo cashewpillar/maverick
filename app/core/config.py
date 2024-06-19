@@ -1,19 +1,10 @@
 import secrets
-from typing import Annotated, Any, Literal
+from typing import Annotated, Literal
 
-from pydantic import (
-    AnyUrl,
-    BeforeValidator,
-    computed_field,
-)
+from pydantic import AnyUrl, BeforeValidator, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-def parse_cors(v: Any) -> list[str] | str:
-    if isinstance(v, str) and not v.startswith("["):
-        return [i.strip() for i in v.split(",")]
-    elif isinstance(v, list | str):
-        return v
-    raise ValueError(v)
+from app.utils import parse_cors
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
