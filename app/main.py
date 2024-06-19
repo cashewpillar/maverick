@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
+from app.core.db import SQLModel, engine
 
 from app.api.main import api_router
 from app.core.config import settings
@@ -27,3 +28,5 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+SQLModel.metadata.create_all(engine)

@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import model_validator
 from sqlmodel import Field, SQLModel
 
-class PKModel(SQLModel, table=True):
+class PKModel(SQLModel):
   id: int | None = Field(default=None, primary_key=True, index=True)
 
 class NoteBase(SQLModel):
@@ -27,5 +27,5 @@ class NoteCreate(NoteBase):
 class NoteUpdate(NoteBase):
   updated_at: datetime = Field(default_factory=datetime.now)
 
-class Note(NoteBase, PKModel):
+class Note(NoteBase, PKModel, table=True):
   pass
