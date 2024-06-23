@@ -1,13 +1,10 @@
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
-from app.core.db import SQLModel, engine
 
 from app.api.main import api_router
 from app.core.config import settings
-
-def custom_generate_unique_id(route: APIRoute) -> str:
-    return f"{route.tags[0]}-{route.name}"
+from app.core.db import create_db_and_tables
+from app.utils import custom_generate_unique_id
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -29,4 +26,4 @@ if settings.BACKEND_CORS_ORIGINS:
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-SQLModel.metadata.create_all(engine)
+create_db_and_tables()
